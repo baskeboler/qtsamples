@@ -23,22 +23,7 @@ public:
   virtual void sort(int column, Qt::SortOrder order) override;
 
 public slots:
-  void filterSamples(const QString &str) {
-
-    beginResetModel();
-
-    filteredSamples = samples;
-    if (!str.trimmed().isEmpty()) {
-
-      filteredSamples.erase(
-          std::remove_if(filteredSamples.begin(), filteredSamples.end(),
-                         [str](SoundSamplePtr s) {
-                           return !s->getPhrase().contains(str);
-                         }),
-          filteredSamples.end());
-    }
-    endResetModel();
-  }
+  void filterSamples(const QString &str);
 
 private:
   QString filterString;

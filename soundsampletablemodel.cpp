@@ -107,3 +107,20 @@ void SoundSampleTableModel::sort(int column, Qt::SortOrder order) {
   std::sort(filteredSamples.begin(), filteredSamples.end(), compare);
   endResetModel();
 }
+
+void SoundSampleTableModel::filterSamples(const QString &str) {
+
+  beginResetModel();
+
+  filteredSamples = samples;
+  if (!str.trimmed().isEmpty()) {
+
+    filteredSamples.erase(std::remove_if(filteredSamples.begin(),
+                                         filteredSamples.end(),
+                                         [str](SoundSamplePtr s) {
+                                           return !s->getPhrase().contains(str);
+                                         }),
+                          filteredSamples.end());
+  }
+  endResetModel();
+}
