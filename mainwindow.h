@@ -26,8 +26,12 @@ public:
 private:
   Ui::MainWindow *ui;
   SoundSampleTableModel *model;
+  int selectedSampleId;
   // QWidget interface
 protected:
   virtual void keyPressEvent(QKeyEvent *event) override;
+private slots:
+  void on_btnTestSample_clicked();
+  void onSampleRowActivated(const QModelIndex &index);
 };
 #endif // MAINWINDOW_H

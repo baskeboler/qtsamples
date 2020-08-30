@@ -24,7 +24,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Multimedia REQUIRED)
 set(SOURCES
     Singleton.h
     main.cpp
@@ -51,4 +51,4 @@ else()
   )
 endif()
 
-target_link_libraries(qtsamples PRIVATE Qt5::Widgets)
+target_link_libraries(qtsamples PRIVATE Qt5::Widgets Qt5::Multimedia)
