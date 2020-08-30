@@ -13,14 +13,17 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
 
   model = new SoundSampleTableModel;
+  selectedSamplesModel = new SoundSampleTableModel(false);
   //  ui->samplesTable->setModel(new SamplesSummaryTableModel());
   ui->samplesTable->setModel(model);
+  ui->selectedSamplesTable->setModel(selectedSamplesModel);
   ui->samplesTable->resizeColumnsToContents();
-
+  ui->selectedSamplesTable->resizeColumnsToContents();
   connect(ui->filterInput, &QLineEdit::textChanged, model,
           &SoundSampleTableModel::filterSamples);
 
-  connect(ui->samplesTable, &QTableView::pressed, this,
+  connect(ui->samplesTable->selectionModel(),
+          &QItemSelectionModel::currentRowChanged, this,
           &MainWindow::onSampleRowActivated);
 }
 
@@ -38,9 +41,25 @@ void MainWindow::on_btnTestSample_clicked() {
   QSound::play(sample->getFullPath());
 }
 
-void MainWindow::onSampleRowActivated(const QModelIndex &index) {
-  //  auto model = ui->samplesTable->model();
+void MainWindow::onSampleRowActivated(const QModelIndex &index,
+                                      const QModelIndex &prev) {
+
   auto sampleId = index.siblingAtColumn(0).data();
   selectedSampleId = sampleId.value<int>();
   qInfo() << "sample id selected: " << selectedSampleId;
+}
+
+void MainWindow::on_btnAddSample_clicked() {
+  auto sample = SampleManager::getInstance()->getById(selectedSampleId);
+  selectedSamplesModel->addSample(sample);
+}
+
+void MainWindow::on_pushButton_clicked() {
+  for (auto s : selectedSamplesModel->getSamples()) {
+    QSound::play(s->getFullPath());
+  }
+}
+
+void MainWindow::on_pushButton_2_clicked() {
+  selectedSamplesModel->setSamples({});
 }

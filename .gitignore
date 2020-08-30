@@ -73,3 +73,5 @@ Thumbs.db
 
 build/
 CMakeLists.txt.user
+qtsamples.cppcheck
+qtsamples-cppcheck-build-dir

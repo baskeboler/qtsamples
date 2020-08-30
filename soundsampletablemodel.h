@@ -10,7 +10,8 @@
 class SoundSampleTableModel : public QAbstractTableModel {
   Q_OBJECT
 public:
-  SoundSampleTableModel(QObject *parent = nullptr);
+  SoundSampleTableModel(bool loadGlobalSamples = true,
+                        QObject *parent = nullptr);
 
   // QAbstractItemModel interface
 public:
@@ -22,6 +23,10 @@ public:
 
   virtual void sort(int column, Qt::SortOrder order) override;
 
+  QVector<SoundSamplePtr> getSamples() const;
+  void setSamples(const QVector<SoundSamplePtr> &value);
+  void ensureFilter();
+  void addSample(SoundSamplePtr s);
 public slots:
   void filterSamples(const QString &str);
 

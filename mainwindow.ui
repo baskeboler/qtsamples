@@ -36,6 +36,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QTableView" name="selectedSamplesTable">
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -51,6 +58,20 @@
          <widget class="QPushButton" name="btnAddSample">
           <property name="text">
            <string>Add</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Play Selected</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="text">
+           <string>Clear Selected</string>
           </property>
          </widget>
         </item>

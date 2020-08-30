@@ -3,10 +3,14 @@
 #include <QDebug>
 #include <QMetaEnum>
 
-SoundSampleTableModel::SoundSampleTableModel(QObject *parent)
-    : QAbstractTableModel{parent},
-      samples{SampleManager::getInstance()->getAllSamples()}, filteredSamples{
-                                                                  samples} {}
+SoundSampleTableModel::SoundSampleTableModel(bool loadGlobalSamples,
+                                             QObject *parent)
+    : QAbstractTableModel{parent} {
+  if (loadGlobalSamples) {
+    samples = SampleManager::getInstance()->getAllSamples();
+    filteredSamples = samples;
+  }
+}
 
 int SoundSampleTableModel::rowCount(const QModelIndex &parent) const {
   if (parent.isValid()) {
@@ -123,4 +127,22 @@ void SoundSampleTableModel::filterSamples(const QString &str) {
                           filteredSamples.end());
   }
   endResetModel();
+}
+
+QVector<SoundSamplePtr> SoundSampleTableModel::getSamples() const {
+  return samples;
+}
+
+void SoundSampleTableModel::setSamples(const QVector<SoundSamplePtr> &value) {
+  samples = value;
+  ensureFilter();
+}
+
+void SoundSampleTableModel::ensureFilter() { filterSamples(filterString); }
+
+void SoundSampleTableModel::addSample(SoundSamplePtr s) {
+  if (samples.end() == std::find(samples.begin(), samples.end(), s)) {
+    samples.push_back(s);
+  }
+  ensureFilter();
 }
