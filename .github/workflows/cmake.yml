@@ -22,7 +22,7 @@ jobs:
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{runner.workspace}}/build
     - name: apt helper action
-          run: sudo apt-get update && sudo apt-get install libboost-all-dev
+      run: sudo apt-get update && sudo apt-get install libboost-all-dev
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.8.0
       with:
