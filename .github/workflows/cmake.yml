@@ -23,33 +23,33 @@ jobs:
       run: cmake -E make_directory ${{runner.workspace}}/build
     - name: apt helper action
           run: sudo apt-get update && sudo apt-get install libboost-all-dev
-        - name: Install Qt
-          uses: jurplel/install-qt-action@v2.8.0
-          with:
-            # Directory to install Qt
-            dir:  # optional
-            # Version of Qt to install
-            version:  5.12.9 # optional, default is 5.12.9
-            # Host platform
-            host: ${{matrix.platform}}
-            # Target platform for build
-            target: desktop # optional, default is desktop
-            # Architecture for Windows/Android
-            arch: ${{matrix.arch}} # optional
-            # Whether or not to install Qt dependencies on Linux
-            install-deps: true # optional, default is true
-            # Additional Qt modules to install
-            modules: qtcharts qtmultimedia # optional
-            # Force a Qt mirror in case the default is not working
-            mirror:  # optional
-            # Whether or not to actually download Qt
-            cached:  # optional, default is false
-            # Version of aqtinstall to use in case of issues
-            aqtversion:  # optional, default is ==0.9.4
-            # Version of py7zr to use in case of issues
-            py7zrversion: # optional, default is ==0.9.1
-            # Any extra arguments to append to the back
-            extra: # optional
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2.8.0
+      with:
+        # Directory to install Qt
+        dir:  # optional
+        # Version of Qt to install
+        version:  5.12.9 # optional, default is 5.12.9
+        # Host platform
+        host: ${{matrix.platform}}
+        # Target platform for build
+        target: desktop # optional, default is desktop
+        # Architecture for Windows/Android
+        arch: ${{matrix.arch}} # optional
+        # Whether or not to install Qt dependencies on Linux
+        install-deps: true # optional, default is true
+        # Additional Qt modules to install
+        modules: qtcharts qtmultimedia # optional
+        # Force a Qt mirror in case the default is not working
+        mirror:  # optional
+        # Whether or not to actually download Qt
+        cached:  # optional, default is false
+        # Version of aqtinstall to use in case of issues
+        aqtversion:  # optional, default is ==0.9.4
+        # Version of py7zr to use in case of issues
+        py7zrversion: # optional, default is ==0.9.1
+        # Any extra arguments to append to the back
+        extra: # optional
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
