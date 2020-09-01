@@ -56,7 +56,7 @@ void MainWindow::on_btnAddSample_clicked() {
 }
 
 void MainWindow::on_pushButton_clicked() {
-  for (auto s : selectedSamplesModel->getSamples()) {
+  for (const auto &s : selectedSamplesModel->getSamples()) {
     QSound::play(s->getFullPath());
   }
 }

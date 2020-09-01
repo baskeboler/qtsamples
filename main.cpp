@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   sMgr->init();
 
   qInfo() << "available phrases: ";
-  for (auto p : sMgr->getAvailablePhrases()) {
+  for (const auto &p : sMgr->getAvailablePhrases()) {
     qInfo() << p << ", samples: " << sMgr->getSamplesByPhrase(p).size();
   }
 

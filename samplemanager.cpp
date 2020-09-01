@@ -18,7 +18,7 @@ void SampleManager::init() {
   QDirIterator it{sampleBasePath(), QDirIterator::Subdirectories};
   while (it.hasNext()) {
 
-    auto entry = it.next();
+    it.next();
 
     auto info = it.fileInfo();
     bool isFile = info.isFile();

@@ -12,7 +12,7 @@ SamplesSummaryTableModel::SamplesSummaryTableModel(QObject *parent)
 int SamplesSummaryTableModel::rowCount(const QModelIndex &parent) const {
   if (parent.isValid())
     return 0;
-  return samples.keys().size();
+  return samples.size();
 }
 
 int SamplesSummaryTableModel::columnCount(const QModelIndex &parent) const {

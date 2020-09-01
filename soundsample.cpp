@@ -19,12 +19,8 @@ void SoundSample::setFileName(const QString &value) { fileName = value; }
 QString SoundSample::toString() const {
   return QString("SoundSample{id=%1, fullPath=%2, fileName=%3, type=%4, "
                  "variant=%5, phrase=%6}")
-      .arg(getId())
-      .arg(getFullPath())
-      .arg(getFileName())
-      .arg(typeString(getType()))
-      .arg(variantString(getVariant()))
-      .arg(phrase);
+      .arg(QString(getId()), getFullPath(), getFileName(),
+           typeString(getType()), variantString(getVariant()), phrase);
 }
 
 SoundSample::SoundSampleType SoundSample::getType() const { return type; }
