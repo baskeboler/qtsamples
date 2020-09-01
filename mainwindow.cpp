@@ -2,10 +2,12 @@
 #include "./ui_mainwindow.h"
 #include "samplemanager.h"
 
+#include "SamplesConfig.h"
 #include "samplessummarytablemodel.h"
 #include "soundsampletablemodel.h"
 #include <QDebug>
 #include <QKeyEvent>
+#include <QMessageBox>
 #include <QSound>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -124,4 +126,15 @@ void MainWindow::handleStateChanged(QAudio::State newState) {
     // ... other cases as appropriate
     break;
   }
+}
+
+void MainWindow::on_actionAbout_Qt_triggered() { QApplication::aboutQt(); }
+
+void MainWindow::on_actionAbout_triggered() {
+  QString appName = QString("%1 v%2.%3")
+                        .arg("qtsamples")
+                        .arg(qtsamples_VERSION_MAJOR)
+                        .arg(qtsamples_VERSION_MINOR);
+  QString desc = QString("%1: a toy audio samples application").arg(appName);
+  QMessageBox::about(this, appName, desc);
 }

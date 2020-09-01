@@ -47,5 +47,7 @@ private slots:
 
   void playAudio(QString p);
   void handleStateChanged(QAudio::State state);
+  void on_actionAbout_Qt_triggered();
+  void on_actionAbout_triggered();
 };
 #endif // MAINWINDOW_H
