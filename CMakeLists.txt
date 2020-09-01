@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(qtsamples LANGUAGES CXX)
+project(qtsamples LANGUAGES CXX VERSION 1.0)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -8,9 +8,15 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(DEFAULT_SAMPLES_DIR "/home/victor/Downloads/musicradar-female-vocal-samples")
+option(USE_SIMPLE_AUDIO_PLAYBACK "use simple QAudio play() method" ON)
+configure_file(SamplesConfig.h.in SamplesConfig.h)
 
+set(CMAKE_INSTALL_PREFIX "~/.local")
+set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "~/.local/include")
+#find_package(cpp-ipfs-api)
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check http://doc.qt.io/qt-5/deployment-android.html for more information.
 # They need to be set before the find_package(Qt5 ...) call.
@@ -38,7 +44,9 @@ set(SOURCES
     soundsampletablemodel.cpp
     soundsampletablemodel.h
     samplessummarytablemodel.cpp
-    samplessummarytablemodel.h)
+    samplessummarytablemodel.h
+    wavfile.cpp
+    wavfile.h)
 if(ANDROID)
   add_library(qtsamples SHARED
  ${SOURCES}
@@ -50,5 +58,6 @@ else()
     mainwindow.ui
   )
 endif()
-
-target_link_libraries(qtsamples PRIVATE Qt5::Widgets Qt5::Multimedia)
+set(CMAKE_LIBRARY_PATH ~/.local/lib)
+set(CMAKE_EXE_LINKER_FLAGS -Llibipfs-api.a)
+target_link_libraries(qtsamples PRIVATE Qt5::Widgets Qt5::Multimedia )

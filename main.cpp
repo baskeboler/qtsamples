@@ -7,14 +7,14 @@
 #include <QtGui/QApplication>
 #endif
 
+#include "SamplesConfig.h"
 #include "samplemanager.h"
 #include <QDebug>
 
 int main(int argc, char *argv[]) {
 
   auto sMgr = SampleManager::getInstance();
-  sMgr->setSampleBasePath(
-      "/home/victor/Downloads/musicradar-female-vocal-samples");
+  sMgr->setSampleBasePath(DEFAULT_SAMPLES_DIR);
   sMgr->init();
 
   qInfo() << "available phrases: ";

@@ -1,11 +1,17 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include "SamplesConfig.h"
 #include "soundsampletablemodel.h"
+#include "wavfile.h"
 
 #include <QtCore/qglobal.h>
 #if QT_VERSION >= 0x050000
 #include <QtWidgets/QMainWindow>
+
+#include <QAudioOutput>
+#include <QDebug>
+#include <QFile>
+
 #else
 #include <QtGui/QMainWindow>
 #endif
@@ -27,6 +33,8 @@ private:
   Ui::MainWindow *ui;
   SoundSampleTableModel *model, *selectedSamplesModel;
   int selectedSampleId;
+  QAudioOutput *audioOutput;
+  WavFile audioFile;
   // QWidget interface
 protected:
   virtual void keyPressEvent(QKeyEvent *event) override;
@@ -36,5 +44,8 @@ private slots:
   void on_btnAddSample_clicked();
   void on_pushButton_clicked();
   void on_pushButton_2_clicked();
+
+  void playAudio(QString p);
+  void handleStateChanged(QAudio::State state);
 };
 #endif // MAINWINDOW_H

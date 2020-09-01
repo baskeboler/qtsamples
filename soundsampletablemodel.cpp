@@ -77,9 +77,7 @@ QVariant SoundSampleTableModel::headerData(int section,
 }
 
 void SoundSampleTableModel::sort(int column, Qt::SortOrder order) {
-  qInfo() << "sorting";
   using std::function;
-  using std::string;
   function<QVariant(SoundSamplePtr)> getter = [](SoundSamplePtr s) {
     return "";
   };
@@ -113,18 +111,16 @@ void SoundSampleTableModel::sort(int column, Qt::SortOrder order) {
 }
 
 void SoundSampleTableModel::filterSamples(const QString &str) {
-
   beginResetModel();
-
   filteredSamples = samples;
   if (!str.trimmed().isEmpty()) {
 
-    filteredSamples.erase(std::remove_if(filteredSamples.begin(),
-                                         filteredSamples.end(),
-                                         [str](SoundSamplePtr s) {
-                                           return !s->getPhrase().contains(str);
-                                         }),
-                          filteredSamples.end());
+    filteredSamples.erase(
+        std::remove_if(filteredSamples.begin(), filteredSamples.end(),
+                       [str](SoundSamplePtr s) {
+                         return !s->getFullPath().contains(str);
+                       }),
+        filteredSamples.end());
   }
   endResetModel();
 }

@@ -11,10 +11,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
-
   model = new SoundSampleTableModel;
   selectedSamplesModel = new SoundSampleTableModel(false);
-  //  ui->samplesTable->setModel(new SamplesSummaryTableModel());
   ui->samplesTable->setModel(model);
   ui->selectedSamplesTable->setModel(selectedSamplesModel);
   ui->samplesTable->resizeColumnsToContents();
@@ -36,9 +34,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 }
 
 void MainWindow::on_btnTestSample_clicked() {
-  //  auto selected = ui->samplesTable->selectedIndexes().first();
   auto sample = SampleManager::getInstance()->getById(selectedSampleId);
-  QSound::play(sample->getFullPath());
+  playAudio(sample->getFullPath());
 }
 
 void MainWindow::onSampleRowActivated(const QModelIndex &index,
@@ -50,8 +47,12 @@ void MainWindow::onSampleRowActivated(const QModelIndex &index,
 }
 
 void MainWindow::on_btnAddSample_clicked() {
-  auto sample = SampleManager::getInstance()->getById(selectedSampleId);
-  selectedSamplesModel->addSample(sample);
+  auto selected = ui->samplesTable->selectionModel()->selectedRows();
+  for (auto s : selected) {
+    int sampleId = s.siblingAtColumn(0).data().toInt();
+    auto sample = SampleManager::getInstance()->getById(sampleId);
+    selectedSamplesModel->addSample(sample);
+  }
 }
 
 void MainWindow::on_pushButton_clicked() {
@@ -62,4 +63,65 @@ void MainWindow::on_pushButton_clicked() {
 
 void MainWindow::on_pushButton_2_clicked() {
   selectedSamplesModel->setSamples({});
+}
+
+#ifndef USE_SIMPLE_AUDIO_PLAYBACK
+void MainWindow::playAudio(QString p) {
+  QAudioDeviceInfo deviceInfo{QAudioDeviceInfo::defaultOutputDevice()};
+  audioFile.open(p);
+  QAudioFormat format{audioFile.fileFormat()};
+  // Set up the format, eg.
+
+  format.setSampleRate(44100);
+  format.setChannelCount(1);
+  format.setSampleSize(32);
+  format.setCodec("audio/pcm");
+  //  format.setByteOrder(QAudioFormat::LittleEndian);
+  format.setSampleType(QAudioFormat::Float);
+  if (!deviceInfo.isFormatSupported(format)) {
+    qWarning()
+        << "Raw audio format not supported by backend, cannot play audio.";
+    return;
+  }
+  //  audioFile.reset();
+  //  audioFile.open(QIODevice::ReadOnly);
+  //  audioFile.seek(0);
+
+  audioOutput = new QAudioOutput{deviceInfo, format, this};
+  audioOutput->setNotifyInterval(100);
+  // audioOutput->
+  connect(audioOutput, &QAudioOutput::stateChanged, this,
+          &MainWindow::handleStateChanged);
+  audioOutput->start(&audioFile);
+  //  QAudio::convertVolume(audioOutput->volume(), )
+  //  audioOutput->setVolume(1.0);
+  //  f->deleteLater();
+}
+
+#else
+void MainWindow::playAudio(QString p) { QSound::play(p); }
+#endif
+
+void MainWindow::handleStateChanged(QAudio::State newState) {
+  qInfo() << "state changed: " << newState;
+  switch (newState) {
+  case QAudio::IdleState:
+    // Finished playing (no more data)
+    audioOutput->stop();
+    audioFile.close();
+    delete audioOutput;
+    break;
+
+  case QAudio::StoppedState:
+    // Stopped for other reasons
+    if (audioOutput->error() != QAudio::NoError) {
+      // Error handling
+      qWarning() << "there was an error";
+    }
+    break;
+
+  default:
+    // ... other cases as appropriate
+    break;
+  }
 }

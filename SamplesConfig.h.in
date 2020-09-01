@@ -1,0 +1,10 @@
+#ifndef SAMPLES_CONFIG_H
+#define SAMPLES_CONFIG_H
+
+// the configured options and settings for Tutorial
+#define qtsamples_VERSION_MAJOR @qtsamples_VERSION_MAJOR @
+#define qtsamples_VERSION_MINOR @qtsamples_VERSION_MINOR @
+
+#define DEFAULT_SAMPLES_DIR "@DEFAULT_SAMPLES_DIR@"
+#cmakedefine USE_SIMPLE_AUDIO_PLAYBACK
+#endif
